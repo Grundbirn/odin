@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body onLoad="onWebviewReady()">
+        <h1><font color="white">Mock KYC Webview</font></h1>
+        <p><font size="+2"><a href="georgego://kycWebviewCompleted">Complete KYC (georgego://kycWebviewCompleted)</a></font></p>
+        <p><font size="+2"><a href="javascript:kycWebviewCompleted()">Complete KYC (georgego://kycWebviewCompleted&state)</a></font></p>
+        <p><font size="+2"><a href="georgego://kycWebviewError">KYC error (georgego://kycWebviewError)</a></font></p>
+
+<button onclick="onWebviewReady()">onWebviewReady</button>
+<button onclick="changeToRandomColor()">changeToRandomColor</button><br/>
+<button onclick="setMyTitle()">setTitle My Title</button>
+<button onclick="setTitleNull()">setTitle null</button>
+<button onclick="setTitleEmpty()">setTitle empty</button>
+​
+<script type="text/javascript">
+    
+    function onWebviewReady() {
+        try{window.webkit.messageHandlers.MobileBridge.postMessage({'action': 'onWebviewReady'}) }catch (e) {console.log("Error", e)} finally {console.log("Bridge: WVReady")}
+        try{MobileBridge.onWebviewReady();}catch (e) {console.log("Error", e)} finally {console.log("Bridge: WVReady")}  
+    }
+
+    function changeToRandomColor() {
+      try{window.webkit.messageHandlers.MobileBridge.postMessage({'color': '#123456'}) }catch (e) {console.log("Error", e)} finally {console.log("Bridge: change color iOS.")}
+      try{MobileBridge.changeStatusBarColor("#123456", 500);}catch (e) {console.log("Error", e)} finally {console.log("Bridge: change color Android.")}  
+    }
+
+    function kycWebviewCompleted() {
+      const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+      })
+      window.location = "georgego://kycWebviewCompleted&state=" + params.state
+    }
+
+    function setMyTitle() {
+      window.document.title = "My Title"
+    }
+    function setTitleNull() {
+      window.document.title = null
+    }
+    function setTitleEmpty() {
+      window.document.title = ""
+    }
+
+    setTimeout(onWebviewReady, (5 * 1000));
+</script>
+
+    <p><font size="+2"><a href="ggo://success">ggo://success</a></font></p>
+    <p><font size="+2"><a href="ggo://error">ggo://error</a></font></p>
+    <p style="color: green;"><a href="https://kyc-mock.herokuapp.com/uploads/podminky.pdf">podminky.pdf</a></p>
+    <p>
+      <ul>
+        <li><a href="https://api.moneta.cz/oauth2/react/#/login">https://api.moneta.cz/oauth2/react/#/login</a></li>
+        <li><a href="https://www.moneta.cz/"> https://www.moneta.cz/ </a></li>
+        <li><a href="https://www.rb.cz/"> https://www.rb.cz/ </a></li>
+        <li><a href="https://www.kb.cz/"> https://www.kb.cz/ </a></li>
+        <li><a href="https://www.airbank.cz/"> https://www.airbank.cz/ </a></li>
+        <li><a href="https://www.csob.cz/"> https://www.csob.cz/ </a></li>
+      </ul>
+    </p>
+
+</body>
+</html>
